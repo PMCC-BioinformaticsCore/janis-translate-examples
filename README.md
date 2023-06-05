@@ -35,12 +35,12 @@ Runsheet:
     <td>1:50pm</td>
   </tr>
   <tr>
-    <td>GATK HaplotypeCaller Tool</td>
+    <td><a href="cwl/tools/gatk_haplotype_caller/tutorial.md">GATK HaplotypeCaller Tool</a</td>
     <td>20 min</td>
     <td>2:10pm</td>
   </tr>
   <tr>
-    <td>Align Sort Markdup Workflow</td>
+    <td><a href="cwl/workflows/align_sort_markdup/tutorial.md">Align Sort Markdup Workflow</a</td>
     <td>20 min</td>
     <td>2:30pm</td>
   </tr>
@@ -53,27 +53,22 @@ Runsheet:
     <td colspan=3 style="text-align: center">GALAXY → NEXTFLOW TRANSLATIONS</td>
   </tr>
   <tr>
-    <td>Intro to Galaxy </td>
+    <td>Intro to Galaxy</td>
     <td>10 min</td>
     <td>2:50pm</td>
   </tr>
   <tr>
-    <td>Samtools Flagstat Tool</td>
+    <td><a href="galaxy/tools/samtools_flagstat/tutorial.md">Samtools Flagstat Tool</a></td>
     <td>10 min</td>
     <td>3:00pm</td>
   </tr>
   <tr>
-    <td>Limma Voom Tool</td>
+    <td><a href="galaxy/tools/limma_voom/tutorial.md">Limma Voom Tool</a></td>
     <td>20 min</td>
     <td>3:20pm</td>
   </tr>
   <tr>
-    <td>RNA-Seq reads to counts</td>
-    <td>30 min</td>
-    <td>3:50pm</td>
-  </tr>
-  <tr>
-    <td>RNA-Seq reads to counts</td>
+    <td><a href="galaxy/workflows/rnaseq_reads_to_counts/tutorial.md">RNA-Seq reads to counts</a></td>
     <td>30 min</td>
     <td>3:50pm</td>
   </tr>
