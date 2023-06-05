@@ -1,3 +1,11 @@
+# manually added 
+sample_data/
+outputs/
+work/
+.nextflow
+.nextflow.log*
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
