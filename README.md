@@ -22,7 +22,7 @@ Runsheet:
     <td>1:20pm</td>
   </tr>
   <tr>
-    <td colspan=3 style="text-align: center">CWL → NEXTFLOW TRANSLATIONS</td>
+    <td colspan=3 align="center">CWL → NEXTFLOW TRANSLATIONS</td>
   </tr>
   <tr>
     <td>Intro to CWL</td>
@@ -50,7 +50,7 @@ Runsheet:
     <td>2:40pm</td>
   </tr>
   <tr>
-    <td colspan=3 style="text-align: center">GALAXY → NEXTFLOW TRANSLATIONS</td>
+    <td colspan=3 align="center">GALAXY → NEXTFLOW TRANSLATIONS</td>
   </tr>
   <tr>
     <td>Intro to Galaxy</td>
@@ -78,7 +78,7 @@ Runsheet:
     <td>4:00pm</td>
   </tr>
   <tr>
-    <td colspan=3 style="text-align: center">EXTENSION</td>
+    <td colspan=3 align="center">EXTENSION</td>
   </tr>
   <tr>
     <td>Participant workflow translations</td>
