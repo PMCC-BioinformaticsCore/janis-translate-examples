@@ -1,13 +1,13 @@
 
 
 
-# RNA-Seq Reads to Counts Translation
+# Section 2.3: RNA-Seq Reads to Counts Translation
 
 ## Introduction
 
-This tutorial demonstrates translation of a challenging Galaxy workflow to Nextflow using `janis translate`. 
+This section demonstrates translation of a challenging Galaxy workflow to Nextflow using `janis translate`. 
 
-The workflow we will translate in this tutorial accepts raw RNA-seq reads as input, and produces gene counts for further analysis (eg. differential expression).
+The workflow we will translate in this section accepts raw RNA-seq reads as input, and produces gene counts for further analysis (eg. differential expression).
 
 Many of the Galaxy Tool Wrappers used in this workflow are challenging. They may:
 - Contain complex execution logic
@@ -16,44 +16,34 @@ Many of the Galaxy Tool Wrappers used in this workflow are challenging. They may
 
 In these situations, the translated files produced by `janis translate` will need manual invertention to run. 
 
-
 <br>
-
 
 **Source Workflow**
 
-The workflow used in this tutorial is taken from the [Galaxy Training Network (GTN)](https://training.galaxyproject.org/training-material/) resource which provides tutorials on how to use Galaxy for bioinformatic analysis. 
+The workflow used in this section is taken from the [Galaxy Training Network (GTN)](https://training.galaxyproject.org/training-material/) resource which provides tutorials on how to use Galaxy for bioinformatic analysis. 
 
 The GTN has over 100 tutorials demonstrating how to use the Galaxy platform to analyse data, and is definitely worth having a look! 
 
 The specific workflow we use today is from the [RNA-Seq reads to counts](https://training.galaxyproject.org/training-material/topics/transcriptomics/tutorials/rna-seq-reads-to-counts/tutorial.html) page, which provides detailed instruction on how to turn raw RNA-seq reads into gene counts. <br>
 
-
 <br>
 
-**Tutorial Outcomes**
-
-In this tutorial we will:
-- Install the required software
-- Obtain the Galaxy workflow
-- Translate the Galaxy workflow to Nextflow using `janis translate`
-- Make manual adjustments to the translation where needed
-- Run the Nextflow workflow using sample input data to validate our translation
-
-After completing this short tutorial, you will be familiar with using `janis translate` to migrate workflows in Galaxy to Nextflow.
-
-Other tutorials exist to demonstrate migration from WDL / CWL / Galaxy -> Nextflow in this repository.
-
-<br>
-
-**Installation**
-
-To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
-The links above contain installation instructions. 
 
 <br>
 
 ## Janis Translate
+
+**Setup**
+
+To begin, make sure you have Nextflow, Singularity or Docker, and Janis installed. 
+
+[//]: <> (SETUP_LINK)
+
+Refer back to the [setup instructions](../../../README.md#Setup) if required.
+
+[//]: <> (/SETUP_LINK)
+
+<br>
 
 **Obtain the Workflow**
 
