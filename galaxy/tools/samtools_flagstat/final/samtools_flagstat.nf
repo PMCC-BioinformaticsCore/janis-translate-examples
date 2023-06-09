@@ -5,7 +5,7 @@ ch_bam = Channel.fromPath( params.bam )
 workflow {
     SAMTOOLS_FLAGSTAT(
         ch_bam,             // input1 
-        params.threads      // at
+        params.threads      // addthreads
     )
     SAMTOOLS_FLAGSTAT.out.output1.view()
 }
@@ -16,17 +16,18 @@ process SAMTOOLS_FLAGSTAT {
 
     input:
     path input1
-    val at
+    val addthreads
 
     output:
-    stdout emit: output1
+    path "output1.txt", emit: output1
 
     script:
     """
     samtools flagstat \
     --output-fmt "txt" \
-    -@ ${at} \
+    -@ ${addthreads} \
     ${input1} \
+    > output1.txt
     """
 
 }

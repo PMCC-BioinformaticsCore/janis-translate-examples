@@ -1,4 +1,4 @@
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 workflow {
     LIMMA_VOOM(
@@ -12,7 +12,7 @@ workflow {
     )
 }
 
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 process LIMMA_VOOM {
     

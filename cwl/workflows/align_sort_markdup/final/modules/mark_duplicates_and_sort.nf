@@ -1,4 +1,4 @@
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 process MARK_DUPLICATES_AND_SORT {
     
@@ -26,7 +26,7 @@ process MARK_DUPLICATES_AND_SORT {
     8 \
     ${output_name} \
     ${bam.simpleName}.mark_dups_metrics.txt \
-    ${input_sort_order} \
+    ${input_sort_order}
     """
 
 }

@@ -48,7 +48,7 @@ Other tutorials exist to demonstrate migration from WDL / CWL / Galaxy -> Nextfl
 
 **Installation**
 
-To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [docker](https://docs.docker.com/engine/install/), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
+To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
 The links above contain installation instructions. 
 
 <br>
@@ -109,11 +109,11 @@ To translate `rna-seq-reads-to-counts.ga` to nextflow, we can write the followin
 janis translate --from galaxy --to nextflow source/rna-seq-reads-to-counts.ga
 ```
 
-*using docker (linux bash)*
+*using singularity*
 
-If the janis translate docker container is being used, we can write the following:
+If the janis translate image is being used, we can write the following:
 ```
-docker run -v $(pwd):/home janis translate --from galaxy --to nextflow source/rna-seq-reads-to-counts.ga
+singularity run [image] janis translate --from galaxy --to nextflow source/rna-seq-reads-to-counts.ga
 ```
 
 <br>
@@ -365,8 +365,9 @@ Janis translate creates this file to provide clarity about the necessary workflo
 Open `nextflow.config` and have a look at the contents. It should look similar to the following: 
 
 ```
-nextflow.enable.dsl=2
-docker.enabled = true
+nextflow.enable.dsl = 2
+singularity.enabled = true
+singularity.cacheDir = "$HOME/.singularity/cache"
 
 params {
     
@@ -453,8 +454,8 @@ Replace the `// INPUTS (MANDATORY)` section of `nextflow.config` with the follow
 
 ```
 // INPUTS (MANDATORY)
-collection_column_join_script      = "templates/collection_column_join_script"
-in_input_fastqs_collection     = [
+collection_column_join_script      = NULL_VALUE
+in_input_fastqs_collection         = [
     "../../../../sample_data/galaxy/rnaseq_reads_to_counts_workflow/MCL1-DG-basalvirgin.fastq.gz",
     "../../../../sample_data/galaxy/rnaseq_reads_to_counts_workflow/MCL1-DH-basalvirgin.fastq.gz",
     "../../../../sample_data/galaxy/rnaseq_reads_to_counts_workflow/MCL1-DI-basalpregnant.fastq.gz",
@@ -509,7 +510,7 @@ process HISAT2 {
     hisat2 \
     ${library_input_1} \
     -U ${read11} \
-    -x ${index_path} \
+    -x ${index_path}
     """
 
 }
@@ -638,7 +639,7 @@ process RSEQC_GENE_BODY_COVERAGE {
     geneBody_coverage.py \
     ${batch_mode_input} \
     -r ${refgene} \
-    -i ${safename} \
+    -i ${safename} 
     """
 
 }
@@ -660,7 +661,6 @@ Let's fix up RSEQC_GENE_BODY_COVERAGE similar to HISAT2. <br>
 >RSEQC_GENE_BODY_COVERAGE(
 >    HISAT2.out.output_alignments,             // batch_mode_input
 >    in_input_reference_gene_bed,              // refgene
->    // params.rseqc_gene_body_coverage_safename  // safename
 >)
 >```
 >
@@ -684,7 +684,7 @@ Let's fix up RSEQC_GENE_BODY_COVERAGE similar to HISAT2. <br>
 >    geneBody_coverage.py \
 >    -r ${refgene} \
 >    -i ${batch_mode_input} \
->    -o output \
+>    -o output 
 >    """
 >
 >}
@@ -805,7 +805,7 @@ Let's update the FASTQC process definition in `modules/fastqc.nf` so this direct
 >${limits} \
 >--outdir ${outdir} \
 >-f ${format_string} \
->${input_file} \
+>${input_file} 
 >"""
 >```
 
@@ -881,7 +881,7 @@ process CUTADAPT {
     script:
     """
     cutadapt \
-    ${library_input_1} \
+    ${library_input_1} 
     """
 
 }
@@ -900,7 +900,7 @@ Let's update the `input:` section to add an adapters input, the `script:` sectio
 To begin, we will address supplying an adapter sequence to the process. 
 
 >⚡ <font color='Orange'>**TASK**</font> <br>
->Add a new `cutadapt_adapters` param in `nextflow.config` with the value "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC".<br>
+>Add a new `cutadapt_adapter` param in `nextflow.config` with the value "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC".<br>
 >This section of `nextflow.config` should now look similar to the following:
 >```
 >samtools_idxstats_addthreads       = "2"       
@@ -915,12 +915,12 @@ To begin, we will address supplying an adapter sequence to the process.
 >)
 >```
 >
->Finally, add a new `val` process input called `adapters` to the CUTADAPT process. <br>
+>Finally, add a new `val` process input called `adapter` to the CUTADAPT process. <br>
 >The CUTADAPT inputs section should now look similar to the following:<br>
 >```
 >input:
 >path library_input_1
->val adapters
+>val adapter
 >```
 
 <br>
@@ -979,7 +979,7 @@ After making the changes above, re-run the Nextflow workflow using `nextflow run
 >
 >For the `CUTADAPT` process, it will now look similar to the following: 
 >```
->nextflow.enable.dsl=2
+>nextflow.enable.dsl = 2
 >
 >process CUTADAPT {
 >    
@@ -1254,7 +1254,7 @@ As each chunk starts with the same basename we will use the first chunk basename
 >The value should be the basename of the first item in the `index_path` input.<br>
 >The `-x` argument line of the HISAT2 script section should now look similar to the following: <br>
 >```
->-x ${index_path[0].simpleName}
+>-x ${index_path[0].simpleName} \
 >```
 
 <br>
@@ -1332,7 +1332,7 @@ Modifying the script section:
 >-a /usr/local/annotation/mm10_RefSeq_exon.txt \
 >-F "SAF" \
 >-o ${alignment.simpleName}.txt \
->${alignment} \
+>${alignment} 
 >"""
 >```
 
@@ -1426,7 +1426,7 @@ Modifying script section:
 >picard MarkDuplicates \
 >INPUT=${input_file} \
 >OUTPUT=${input_file.simpleName}.markdup.bam \
->METRICS_FILE=${input_file.simpleName}.metrics.txt \
+>METRICS_FILE=${input_file.simpleName}.metrics.txt
 >"""
 >```
 
@@ -1572,7 +1572,7 @@ Ensure output filenames are generated based on input filenames.
 >    geneBody_coverage.py \
 >    -r ${refgene} \
 >    -i ${batch_mode_input} \
->    -o ${batch_mode_input.simpleName} \                                                        <-
+>    -o ${batch_mode_input.simpleName}                                                          <-
 >    """
 >
 >}
@@ -1597,7 +1597,7 @@ Ensure output filenames are generated based on input filenames.
 >    infer_experiment.py \
 >    -i ${input_bam} \
 >    -r ${refgene} \
->    > ${input_bam.simpleName}.infer_experiment.txt \                           <-
+>    > ${input_bam.simpleName}.infer_experiment.txt                             <-
 >    """
 >
 >}
@@ -1622,7 +1622,7 @@ Ensure output filenames are generated based on input filenames.
 >    read_distribution.py \
 >    -i ${input_bam} \
 >    -r ${refgene} \
->    > ${input_bam.simpleName}.read_distribution.txt \                          <-
+>    > ${input_bam.simpleName}.read_distribution.txt                            <-
 >    """
 >
 >}
@@ -1647,7 +1647,7 @@ Ensure output filenames are generated based on input filenames.
 >    samtools idxstats \
 >    -@ ${addthreads} \
 >    ${input_bam} \
->    > ${input_bam.simpleName}.idxstats.tabular \                           <-
+>    > ${input_bam.simpleName}.idxstats.tabular                             <-
 >    """
 >
 >}

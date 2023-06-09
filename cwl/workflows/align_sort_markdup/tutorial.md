@@ -49,7 +49,7 @@ Other tutorials exist to demonstrate migration from WDL / CWL / Galaxy -> Nextfl
 
 **Installation**
 
-To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [docker](https://docs.docker.com/engine/install/), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
+To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
 The links above contain installation instructions. 
 
 <br>
@@ -77,11 +77,11 @@ To translate `align_sort_markdup.cwl` to nextflow, we can write the following in
 janis translate --from cwl --to nextflow ./source/subworkflows/align_sort_markdup.cwl
 ```
 
-*using docker (linux bash)*
+*using singularity*
 
-If the janis translate docker container is being used, we can write the following:
+If the janis translate image is being used, we can write the following:
 ```
-docker run -v $(pwd):/home janis translate --from cwl --to nextflow ./source/subworkflows/align_sort_markdup.cwl
+singularity run [image] janis translate --from cwl --to nextflow ./source/subworkflows/align_sort_markdup.cwl
 ```
 
 <br>
@@ -234,8 +234,9 @@ Janis translate creates this file to provide clarity about the necessary workflo
 Open `nextflow.config` and have a look at the contents. It should look similar to the following: 
 
 ```
-nextflow.enable.dsl=2
-docker.enabled = true
+nextflow.enable.dsl = 2
+singularity.enabled = true
+singularity.cacheDir = "$HOME/.singularity/cache"
 
 params {
     
@@ -565,7 +566,7 @@ In the `ALIGN_AND_TAG` process script, make the following change:
     "${readgroup}" \              <- quotes added
     ${reference} \
     8 \
-    > refAlign.bam \
+    > refAlign.bam 
     """
 ```
 

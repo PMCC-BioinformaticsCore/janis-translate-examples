@@ -1,4 +1,4 @@
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 process INDEX_BAM {
     
@@ -21,7 +21,7 @@ process INDEX_BAM {
      &&  \
     cp \
     ${bam}.bai \
-    ${bam.simpleName}.bai \
+    ${bam.simpleName}.bai
     """
 
 }

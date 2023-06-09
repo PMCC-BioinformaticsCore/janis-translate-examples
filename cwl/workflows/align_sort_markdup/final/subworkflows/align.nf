@@ -1,4 +1,4 @@
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 include { ALIGN_AND_TAG } from '../modules/align_and_tag'
 
@@ -12,9 +12,9 @@ workflow ALIGN {
 
     main:
     ALIGN_AND_TAG(
-        ch_reference.map{ tuple -> [tuple[0], tuple[1], tuple[2], tuple[3], tuple[6], tuple[7]] },  // reference
-        ch_bam,         // bam
-        ch_readgroup,   // readgroup
+        ch_reference[0, 1, 2, 3, 6, 7],  // reference
+        ch_bam,                          // bam
+        ch_readgroup                     // readgroup
     )
 
     emit:

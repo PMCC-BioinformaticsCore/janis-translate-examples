@@ -1,4 +1,4 @@
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 include { FASTQC as FASTQC1 } from './modules/fastqc'
 include { FASTQC as FASTQC2 } from './modules/fastqc'

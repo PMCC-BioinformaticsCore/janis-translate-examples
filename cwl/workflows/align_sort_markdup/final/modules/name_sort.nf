@@ -1,4 +1,4 @@
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 process NAME_SORT {
     
@@ -23,7 +23,7 @@ process NAME_SORT {
     -n \
     -o \
     ${bam.simpleName}.NameSorted.bam \
-    ${bam} \
+    ${bam}
     """
 
 }

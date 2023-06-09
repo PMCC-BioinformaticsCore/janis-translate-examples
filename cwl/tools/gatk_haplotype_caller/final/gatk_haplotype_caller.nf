@@ -1,5 +1,5 @@
 
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 ch_bam = Channel.fromPath( params.bam ).toList()
 ch_dbsnp = Channel.fromPath( params.dbsnp ).toList()
@@ -25,12 +25,11 @@ workflow {
 process GATK_HAPLOTYPE_CALLER {
     
     container "broadinstitute/gatk:4.1.8.1"
-    publishDir "./outputs"  
 
     input:
     path bam
     path reference
-    path dbsnp_vcf
+    path dbsnp_vcf, stageAs: 'dbsnp_vcf/*'
     val intervals
     val gvcf_gq_bands
     val emit_reference_confidence

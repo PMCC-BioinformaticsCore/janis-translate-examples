@@ -1,4 +1,4 @@
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 process MERGE_BAMS_SAMTOOLS {
     
@@ -20,7 +20,7 @@ process MERGE_BAMS_SAMTOOLS {
     /usr/local/bin/samtools merge \
     -@ 4 \
     ${name}.merged.bam \
-    ${bams_joined} \
+    ${bams_joined}
     """
 
 }

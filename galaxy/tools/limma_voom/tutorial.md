@@ -72,7 +72,7 @@ Other tutorials exist to demonstrate migration from WDL / CWL / Galaxy -> Nextfl
 
 **Installation**
 
-To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [docker](https://docs.docker.com/engine/install/), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
+To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
 The links above contain installation instructions. 
 
 <br>
@@ -113,11 +113,11 @@ To translate the `limma` tool wrapper to nextflow, we can write the following in
 janis translate --from cwl --to nextflow toolshed.g2.bx.psu.edu/repos/iuc/limma_voom/limma_voom/3.50.1+galaxy0
 ```
 
-*using docker (linux bash)*
+*using singularity*
 
-If the janis translate docker container is being used, we can write the following:
+If the janis translate image is being used, we can write the following:
 ```
-docker run -v $(pwd):/home janis translate --from cwl --to nextflow \ toolshed.g2.bx.psu.edu/repos/iuc/limma_voom/limma_voom/3.50.1+galaxy0
+singularity run [image] janis translate --from cwl --to nextflow \ toolshed.g2.bx.psu.edu/repos/iuc/limma_voom/limma_voom/3.50.1+galaxy0
 ```
 
 <br>
@@ -141,25 +141,25 @@ Inside the `/translated` folder, we see the following:
 The `translated/limma_voom.nf` file is our nextflow process. It should be similar to the following: 
 
 ```
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 process LIMMA_VOOM {
     
     container "quay.io/biocontainers/janis-translate-limma-voom-3.34.9.9"
 
     input:
+    path anno_geneanno
+    path cont_cinfo
+    path input_counts
+    path input_fact_finfo
     path limma_voom_script
-    path option_a
-    path option_c
-    path option_f
-    path option_m
-    path option_r
-    val option_o
+    path out_report1
+    val out_report_files_path
 
     output:
     path "output_dir/*_filtcounts", emit: outFilt
     path "output_dir/*_normcounts", emit: outNorm
-    path "outReport.html", emit: outReport
+    path "outReport.html", emit: outReport2
     path "output_dir/*.tsv?", emit: outTables
     path "libsizeinfo", emit: out_libinfo
     path "unknown_collection_pattern", emit: out_rscript
@@ -168,27 +168,26 @@ process LIMMA_VOOM {
     """
     Rscript \
     ${limma_voom_script} \
-    -C ${option_c} \
-    -R ${option_r} \
-    -a ${option_a} \
-    -f ${option_f} \
-    -m ${option_m} \
+    -C ${cont_cinfo} \
+    -R ${out_report1} \
+    -a ${anno_geneanno} \
+    -f ${input_fact_finfo} \
+    -m ${input_counts} \
     -G 10 \
+    -P "i" \
     -c 1 \
     -d "BH" \
     -j "" \
     -l 0 \
     -n "TMM" \
-    -o ${option_o} \
+    -o ${out_report_files_path} \
     -p 0.05 \
     -s 0 \
     -t 3 \
-    -z 0 \
-    "i" \
+    -z 0
     """
 
 }
-
 ```
 
 That this nextflow process has multiple inputs, many command line arguments, and multiple outputs. 
@@ -271,19 +270,19 @@ At the top of the file, we see some documentation:
 
 For each process input, find the command line argument it feeds, then look up the argument documentation in `limma_voom.R`. 
 
-For example, the `option_a` process input feeds the `-a` argument.<br>
+For example, the `anno_geneanno` process input feeds the `-a` argument.<br>
 Looking at the documentation, we see that this is the gene annotations file. 
 ```
 # limma_voom.nf
--a ${option_a} \
+-a ${anno_geneanno} \
 
 # limma_voom.R
 annoPath", "a", 2, "character"      -Path to input containing gene annotations
 ```
-The `option_c` process input feeds the `-C` argument, which is a file containing contrasts of interest:
+The `cont_cinfo` process input feeds the `-C` argument, which is a file containing contrasts of interest:
 ```
 # limma_voom.nf
--C ${option_c} \
+-C ${cont_cinfo} \
 
 # limma_voom.R
 contrastFile", "C", 1, "character"  -Path to contrasts information file
@@ -296,10 +295,10 @@ contrastFile", "C", 1, "character"  -Path to contrasts information file
 
 *html path*
 
-The `path option_r` process input specifies the name of a html file which will present our results. <br>
+The `path out_report1` process input specifies the name of a html file which will present our results. <br>
 This should be a `val` input rather than `path`. <br>
 We aren't actually supplying a file; we are providing the script a filename, which should be a string.<br>
-*Modify*  `path option_r` to `val option_r`. 
+*Modify*  `path out_report1` to `val out_report1`. 
 
 <br>
 
@@ -319,7 +318,7 @@ We will be using a single input counts file.<br>
 
 Galaxy Tool Wrappers often allow you to generate extra outputs based on what the user wants. <br>
 For this tutorial, we're not interested in any of the optional outputs - just the single `outReport` output. <br>
-*Remove* all the process outputs except `outReport`.
+*Remove* all the process outputs except `outReport2`.
 
 
 **Add publishDir Directive**
@@ -338,37 +337,37 @@ process LIMMA_VOOM {
     publishDir "./outputs"
 
     input:
+    path anno_geneanno
+    path cont_cinfo
+    path input_counts
+    path input_fact_finfo
     path limma_voom_script
-    path option_a
-    path option_c
-    path option_f
-    path option_m
-    val option_r
-    val option_o
+    val out_report1
+    val out_report_files_path
 
     output:
-    path "outReport.html", emit: outReport
+    path "outReport.html", emit: outReport2
 
     script:
     """
     Rscript \
     ${limma_voom_script} \
-    -C ${option_c} \
-    -R ${option_r} \
-    -a ${option_a} \
-    -f ${option_f} \
-    -m ${option_m} \
+    -C ${cont_cinfo} \
+    -R ${out_report1} \
+    -a ${anno_geneanno} \
+    -f ${input_fact_finfo} \
+    -m ${input_counts} \
     -G 10 \
     -P "i" \
     -c 1 \
     -d "BH" \
     -l 0 \
     -n "TMM" \
-    -o ${option_o} \
+    -o ${out_report_files_path} \
     -p 0.05 \
     -s 0 \
     -t 3 \
-    -z 0 \
+    -z 0
     """
 
 }
@@ -399,7 +398,9 @@ Copy and paste the following code into your `nextflow.config` file. <br>
 Replace `(local_dir)` with the directory path to `janis-translate-examples`.
 
 ```
-docker.enabled = true
+nextflow.enable.dsl = 2
+singularity.enabled = true
+singularity.cacheDir = "$HOME/.singularity/cache"
 
 params {
     limma_voom_script = "(local_dir)/galaxy/tools/limma-voom/final/limma_voom.R"
@@ -412,7 +413,7 @@ params {
 }
 ```
 
-This tells nextflow to use docker, and sets up input parameters for our sample data.
+This tells nextflow to use singularity, and sets up input parameters for our sample data.
 
 <br>
 
@@ -423,17 +424,17 @@ Now we have input data set up using the `params` global variable, we will add so
 Copy and paste the following lines at the top of `limma_voom.nf`:
 
 ```
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 workflow {
     LIMMA_VOOM(
+        params.annotation_file,     // anno_geneanno
+        params.contrast_file,       // cont_cinfo
+        params.matrix_file,         // input_counts
+        params.factor_file,         // input_fact_finfo
         params.limma_voom_script,   // limma_voom_script
-        params.annotation_file,     // option_a
-        params.contrast_file,       // option_c
-        params.factor_file,         // option_f
-        params.matrix_file,         // option_m
-        params.html_path,           // option_r
-        params.output_path,         // option_o
+        params.html_path,           // out_report1
+        params.output_path,         // out_report_files_path
     )
 }
 ```
@@ -458,7 +459,7 @@ To run the workflow using our sample data, we can now write the following comman
 nextflow run limma_voom.nf
 ```
 
-Nextflow will automatically check if there is a `nextflow.config` file in the working directory, and if so will use that to configure itself. Our inputs are supplied in `nextflow.config` alongside the dsl2 & docker config, so it should run without issue. 
+Nextflow will automatically check if there is a `nextflow.config` file in the working directory, and if so will use that to configure itself. Our inputs are supplied in `nextflow.config` alongside the dsl2 & singularity config, so it should run without issue. 
 
 <br>
 

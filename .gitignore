@@ -1,10 +1,15 @@
 # manually added 
 sample_data/
+sample_data*
 outputs/
 work/
 .nextflow
 .nextflow.log*
 runsheet.md
+requirements.txt
+translated/
+.janis
+notes.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

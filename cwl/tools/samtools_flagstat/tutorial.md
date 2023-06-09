@@ -30,7 +30,7 @@ Other tutorials exist to demonstrate migration from WDL / CWL / Galaxy -> Nextfl
 
 **Installation**
 
-To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [docker](https://docs.docker.com/engine/install/), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
+To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
 The links above contain installation instructions. 
 
 <br>
@@ -56,11 +56,11 @@ To translate `samtools_flagstat.cwl` to nextflow, we can write the following in 
 janis translate --from cwl --to nextflow ./source/samtools_flagstat.cwl
 ```
 
-*using docker (linux bash)*
+*using singularity*
 
-If the janis translate docker container is being used, we can write the following:
+If the janis translate image is being used, we can write the following:
 ```
-docker run -v $(pwd):/home janis translate --from cwl --to nextflow ./source/samtools_flagstat.cwl
+singularity run [image] janis translate --from cwl --to nextflow ./source/samtools_flagstat.cwl
 ```
 
 <br>
@@ -74,7 +74,7 @@ You will see a folder called `translated` appear, and a nextflow process called 
 The `translated/samtools_flagstat.nf` file should be similar to the following: 
 
 ```
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 process SAMTOOLS_FLAGSTAT {
     
@@ -137,8 +137,9 @@ Create a new file called `nextflow.config` in the `translated` folder alongside 
 Copy and paste the following code into your `nextflow.config` file: 
 
 ```
-nextflow.enable.dsl=2
-docker.enabled = true
+nextflow.enable.dsl = 2
+singularity.enabled = true
+singularity.cacheDir = "$HOME/.singularity/cache"
 
 params {
 
@@ -155,9 +156,10 @@ This tells nextflow how to run, and sets up an input parameter for our indexed b
 
 The `bam` parameter is a list which provides paths to the `.bam` and `.bai` sample data we will use to test the nextflow translation. From here, we can refer to the indexed bam input as `params.bam` in other files.
 
-> NOTE<br>
-> `nextflow.enable.dsl=2` ensures that we are using the dsl2 nextflow syntax which is the current standard. <br>
-> `docker.enabled = true` tells nextflow to run processes using docker. Our `samtools_flagstat.nf` has a directive with the form `container "quay.io/biocontainers/samtools:1.11--h6270b1f_0"` provided, so it will use the specified image when running this process. 
+>NOTE<br>
+>`nextflow.enable.dsl = 2` ensures that we are using the dsl2 nextflow syntax which is the current standard. <br>
+>`singularity.enabled = true` tells nextflow to run processes using singularity. Our `samtools_flagstat.nf` has a directive with the form `container "quay.io/biocontainers/samtools:1.11--h6270b1f_0"` provided, so it will use the specified image when running this process. <br>
+>`singularity.cacheDir = "$HOME/.singularity/cache"` tells nextflow where singularity images are stored
 
 <br>
 
@@ -200,7 +202,7 @@ To run the workflow using our sample data, we can now write the following comman
 nextflow run samtools_flagstat.nf
 ```
 
-Nextflow will automatically check if there is a `nextflow.config` file in the working directory, and if so will use that to configure itself. Our inputs are supplied in `nextflow.config` alongside the dsl2 & docker config, so it should run without issue. 
+Nextflow will automatically check if there is a `nextflow.config` file in the working directory, and if so will use that to configure itself. Our inputs are supplied in `nextflow.config` alongside the dsl2 & singularity config, so it should run without issue. 
 
 Once completed, we can check the `./outputs` folder to view our results. 
 

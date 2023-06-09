@@ -46,8 +46,9 @@ The first thing to do is set up inputs.
 We provide inputs in the nextflow.config file as params. 
 
 ```
-nextflow.enable.dsl=2
-docker.enabled = true
+nextflow.enable.dsl = 2
+singularity.enabled = true
+singularity.cacheDir = "$HOME/.singularity/cache"
 
 params {
     
@@ -95,9 +96,7 @@ SUBWORKFLOW 1
 Before running the workflow, have a look through the files to locate any issues you see.  <br>
 Once you are satisfied, try to run the workflow. 
 
-
-To run the workflow, first ensure that docker is running. <br>
-The translation can then be run using the following:
+The translation can be run using the following:
 ```
 nextflow run main.nf
 ```
@@ -128,7 +127,7 @@ Our first error is triggered when nextflow runs the NANOPLOT task.
 NanoPlot is a tool used in the workflow, so its translation will appear as a nextflow ***process*** in the `modules` directory as `nanoplot.nf`. 
 
 ```
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 process NANOPLOT {
     debug true

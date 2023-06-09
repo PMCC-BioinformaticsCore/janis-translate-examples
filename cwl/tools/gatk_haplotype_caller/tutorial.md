@@ -31,7 +31,7 @@ Other tutorials exist to demonstrate migration from WDL / CWL / Galaxy -> Nextfl
 
 **Installation**
 
-To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [docker](https://docs.docker.com/engine/install/), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
+To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
 The links above contain installation instructions. 
 
 <br>
@@ -57,11 +57,11 @@ To translate `gatk_haplotype_caller.cwl` to nextflow, we can write the following
 janis translate --from cwl --to nextflow ./source/gatk_haplotype_caller.cwl
 ```
 
-*using docker (linux bash)*
+*using singularity*
 
-If the janis translate docker container is being used, we can write the following:
+If the janis translate image is being used, we can write the following:
 ```
-docker run -v $(pwd):/home janis translate --from cwl --to nextflow ./source/gatk_haplotype_caller.cwl
+singularity run [image] janis translate --from cwl --to nextflow ./source/gatk_haplotype_caller.cwl
 ```
 
 <br>
@@ -75,7 +75,7 @@ You will see a folder called `translated` appear, and a nextflow process called 
 The `translated/gatk_haplotype_caller.nf` file should be similar to the following: 
 
 ```
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 process GATK_HAPLOTYPE_CALLER {
     
@@ -186,9 +186,9 @@ Create a new file called `nextflow.config` in the `translated` folder alongside 
 Copy and paste the following code into your `nextflow.config` file: 
 
 ```
-docker.enabled = true
-nextflow.enable.dsl=2
-
+nextflow.enable.dsl = 2
+singularity.enabled = true
+singularity.cacheDir = "$HOME/.singularity/cache"
 
 params {
     NULL_VALUE = 'NULL'
@@ -230,9 +230,10 @@ In this case we are providing null values for the `gvcf_gq_bands`, `contaminatio
 
 <br>
 
-> NOTE<br>
-> `nextflow.enable.dsl=2` ensures that we are using the dsl2 nextflow syntax which is the current standard. <br>
-> `docker.enabled = true` tells nextflow to run processes using docker. Our `gatk_haplotype_caller.nf` has a directive with the form `container "broadinstitute/gatk:4.1.8.1"` provided, so it will use the specified image when running this process. 
+>NOTE<br>
+>`nextflow.enable.dsl = 2` ensures that we are using the dsl2 nextflow syntax which is the current standard. <br>
+>`singularity.enabled = true` tells nextflow to run processes using singularity. Our `gatk_haplotype_caller.nf` has a directive with the form `container "broadinstitute/gatk:4.1.8.1"` provided, so it will use the specified image when running this process. <br>
+>`singularity.cacheDir = "$HOME/.singularity/cache"` tells nextflow where singularity images are stored
 
 <br>
 
@@ -289,7 +290,7 @@ To run the workflow using our sample data, we can now write the following comman
 nextflow run gatk_haplotype_caller.nf
 ```
 
-Nextflow will automatically check if there is a `nextflow.config` file in the working directory, and if so will use that to configure itself. Our inputs are supplied in `nextflow.config` alongside the dsl2 & docker config, so it should run without issue. 
+Nextflow will automatically check if there is a `nextflow.config` file in the working directory, and if so will use that to configure itself. Our inputs are supplied in `nextflow.config` alongside the dsl2 & singularity config, so it should run without issue. 
 
 Once completed, we can check the `./outputs` folder to view our results. <br>
 If everything went well, the `./outputs` folder should contain 2 files: 
