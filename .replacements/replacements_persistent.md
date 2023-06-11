@@ -58,13 +58,13 @@ By the end of the workshop you should be able to:
 -------------------------------
 
 ### Required Software
-- Janis
 - Nextflow
 - Singularity or Docker
+- Janis
 - IDE of your choosing (we use VS Code in this workshop)
 
 ### Required Data
-* The sample data can be downloaded via zenodo at the following link: [link]
+* Sample data can be downloaded from the following link: [ZENODO LINK].
 
 -------------------------------
 
@@ -82,15 +82,6 @@ Created/Reviewed: May 2023
 -------------------------------------------------------------------
 -------------------------------------------------------------------
 
-[//]: <> (SETUP_LINK)
-
-Refer back to the [setup instructions](#Setup) if required.
-
-[//]: <> (/SETUP_LINK)
-
--------------------------------------------------------------------
--------------------------------------------------------------------
-
 [//]: <> (SOFTWARE_INSTALLATION)
 
 Make sure you have the following installed:
@@ -103,20 +94,18 @@ Make sure you have the following installed:
 -------------------------------------------------------------------
 -------------------------------------------------------------------
 
-[//]: <> (VSC_EXTENSIONS)
-
-VS Code can be customised using extensions. 
-
-We will install the Nextflow extension which provides syntax highlighting and quick shortcuts for common code snippets.
-
-[//]: <> (/VSC_EXTENSIONS)
-
--------------------------------------------------------------------
--------------------------------------------------------------------
-
 [//]: <> (REMOTE_SSH_EXTENSION)
 
 [//]: <> (/REMOTE_SSH_EXTENSION)
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+[//]: <> (SETUP_LINK)
+
+Refer back to the [setup instructions](#Setup) if required.
+
+[//]: <> (/SETUP_LINK)
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------

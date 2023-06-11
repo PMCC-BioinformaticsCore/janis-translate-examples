@@ -1,6 +1,5 @@
 # manually added 
 sample_data/
-sample_data*
 outputs/
 work/
 .nextflow
