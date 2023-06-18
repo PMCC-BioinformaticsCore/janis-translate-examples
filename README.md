@@ -9,6 +9,8 @@ This markdown provides a brief [background](#background) to workflow migration, 
 
 [//]: <> (/PREAMBLE)
 
+For the Australian BioCommons Janis translate workshop (19th of June 2023) materials, please see [Janis Translate Workshop 19/06/2023](janis_translate.md)
+
 <br>
 
 ## Background
