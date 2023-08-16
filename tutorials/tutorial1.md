@@ -1,4 +1,4 @@
-# Tutorial 1: Simple CWL tool -> Nextflow
+# Tutorial 1: Simple CWL Tool -> Nextflow
 
 ## Introduction
 
