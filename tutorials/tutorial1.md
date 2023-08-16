@@ -1,75 +1,121 @@
-
-
-
-# Samtools Flagstat Tool Translation
+# Tutorial 1: Simple CWL tool -> Nextflow
 
 ## Introduction
 
-This tutorial demonstrates translation of a basic `samtools flagstat` tool from CWL to Nextflow using `janis translate`. <br>
+This section demonstrates translation of a basic `samtools flagstat` tool from CWL to Nextflow using `janis translate`. 
 
-**Source Tool**
-
-The CWL tool used in this tutorial - [samtools_flagstat](https://github.com/genome/analysis-workflows/blob/master/definitions/tools/samtools_flagstat.cwl) -  is taken from the [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) [analysis-workflows](https://github.com/genome/analysis-workflows) repository. 
+The CWL tool used in this section - [samtools_flagstat.cwl](https://github.com/genome/analysis-workflows/blob/master/definitions/tools/samtools_flagstat.cwl) -  is taken from the [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) [analysis-workflows](https://github.com/genome/analysis-workflows) repository. 
 
 This resource stores publically available analysis pipelines for genomics data. <br>
 It is a fantastic piece of research software, and the authors thank MGI for their contribution to open-source research software. 
 
-The underlying software run by this tool - [samtools_flagstat](http://www.htslib.org/doc/samtools-flagstat.html) - displays summary information for an alignment file. 
+The underlying software run by this tool - [Samtools Flagstat](http://www.htslib.org/doc/samtools-flagstat.html) - displays summary information for an alignment file.
 
-**Tutorial Outcomes**
+<br>
 
-In this tutorial we will:
-- Install the required software
-- Translate the CWL using `janis translate`
-- Make manual adjustments to the translation if necessary
-- Run the nextflow using sample input data to validate our nextflow code
+**Software**
 
-After completing this short tutorial, you will be familiar with using `janis translate` to migrate workflow tools in CWL to Nextflow.
+Before continuing, ensure you have the following software installed:
+- [Nextflow](https://nf-co.re/usage/installation)
+- [Singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html) or [Docker](https://docs.docker.com/engine/install/)
+- [Janis](https://janis.readthedocs.io/en/latest/index.html)
 
-Other tutorials exist to demonstrate migration from WDL / CWL / Galaxy -> Nextflow in this repository, including full workflow migrations with multiple tasks. 
+<br>
 
-**Installation**
+**IDE**
 
-To begin, make sure you have [nextflow](https://nf-co.re/usage/installation), [singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html), and [janis translate](https://janis.readthedocs.io/en/latest/index.html) installed. <br>
-The links above contain installation instructions. 
+Any IDE or a CLI text editor (VIM, nano) are sufficient for this material. 
+
+We recommend Visual Studio Code (VS Code) as it is lightweight and has rich support for extensions to add functionality. 
 
 <br>
 
 ## Janis Translate
 
-To translate a workflow,  we use `janis translate`.
+**Obtaining Janis**
+
+In this tutorial we will use a singularity container to run `janis translate`. 
+
+Containers are great because they remove the need for package managers, and guarantee that the software can run on any machine. 
+
+Run the following command to pull the janis image:
+```
+singularity pull janis.sif docker://pppjanistranslate/janis-translate:0.13.0
+```
+
+Check your image by running the following command:
+```
+singularity exec ~/janis.sif janis translate
+```
+
+If the image is working, you should see the janis translate helptext.
+
+<br>
+
+**Downloading Source Files and Sample Data**
+
+For this tutorial we will fetch all necessary data from zenodo using wget.  
+
+This archive contains the source CWL file, sample data, and finished translations as a reference.
+
+Run the following commands to download & decompress the zenodo archive:
+```
+wget https://zenodo.org/record/8251789/files/tutorial1.tar.gz
+tar -xvf tutorial1.tar.gz
+```
+
+After you have decompressed the tar archive, change into the new directory: 
+
+```
+cd tutorial1
+```
+
+Inside this folder we have the following structure: 
+```
+tutorial1
+├── data
+│   ├── 2895499223_sorted.bam
+│   └── 2895499223_sorted.bam.bai
+├── final
+│   ├── nextflow.config
+│   └── samtools_flagstat.nf
+└── source
+    └── samtools_flagstat.cwl
+``` 
+
+We will translate the `source/samtools_flagstat.cwl` tool into nextflow using janis, then will test out our translation using the files inside the indexed bam file in the `data/` folder. 
+
+
+<br>
+
+## Running Janis Translate
+
+To translate a tool / workflow,  we use `janis translate`.
 
 ```
 janis translate --from <src> --to <dest> <filepath>
 ```
 
-The `--from` specifies the workflow language of the source file(s), and `--to` specifies the destination we want to translate to. 
+The `--from` argument specifies the workflow language of the source file(s), and `--to` specifies the destination we want to translate to. 
 
-In our case, we want to translate CWL -> Nextflow, and our source CWL file is located at `source/samtools_flagstat.cwl` relative to this document.
+In our case, this will be `--from cwl --to nextflow`.
 
-<br>
+The `<filepath>` argument is the source file we will translate. 
 
-*using pip*
-
-To translate `samtools_flagstat.cwl` to nextflow, we can write the following in a shell:
-```
-janis translate --from cwl --to nextflow ./source/samtools_flagstat.cwl
-```
-
-*using singularity*
-
-If the janis translate image is being used, we can write the following:
-```
-singularity run [image] janis translate --from cwl --to nextflow ./source/samtools_flagstat.cwl
-```
+In this tutorial, the filepath will be `source/samtools_flagstat.cwl`
 
 <br>
 
-You will see a folder called `translated` appear, and a nextflow process called `samtools_flagstat.nf` will be present inside. 
+To translate our cwl tool, run the following command:
+```
+singularity exec ~/janis.sif janis translate --from cwl --to nextflow source/samtools_flagstat.cwl
+```
+
+You will see a folder called `translated/` appear, and a nextflow process called `samtools_flagstat.nf` will be present inside. 
 
 <br>
 
-## Manual Adjustments
+## Manual Adjustments to Translated Tool
 
 The `translated/samtools_flagstat.nf` file should be similar to the following: 
 
@@ -104,6 +150,8 @@ We can also see that a container image is available for this tool. In the next s
 This translation is correct for the `samtools_flagstat.cwl` file and needs no adjusting. <br>
 Have a look at the source CWL file to see how they match up. 
 
+<br>
+
 > Note: <br>
 > `def bam = bam[0]` in the script block is used to handle datatypes with secondary files. <br>
 > The `bam` input is an indexed bam type, so requires a `.bai` file to also be present in the working directory alongside the `.bam` file. <br><br>
@@ -112,16 +160,20 @@ Have a look at the source CWL file to see how they match up.
 
 <br>
 
-## Running Samtools Flagstat as a Workflow
-
+## Running Translated Tool as a Workflow
 
 **Collecting Process Outputs**
 
 Let's add a `publishDir` directive to our translated process so that we can capture the outputs of this process.
 
 ```
+process SAMTOOLS_FLAGSTAT {
+
     container "quay.io/biocontainers/samtools:1.11--h6270b1f_0"
-    publishDir "./outputs"                                   
+    publishDir "./outputs"                                          <-
+    ....
+
+}                          
 ```
 
 Nextflow allows us to capture the outputs created by a process using the `publishDir` directive seen above. 
@@ -132,7 +184,7 @@ Nextflow allows us to capture the outputs created by a process using the `publis
 
 To run this process, we will set up a `nextflow.config` file and add some lines to the top of our process definition to turn it into a workflow.
 
-Create a new file called `nextflow.config` in the `translated` folder alongside `samtools_flagstat.nf`. 
+Create a new file called `nextflow.config` in the `translated/` folder alongside `samtools_flagstat.nf`. 
 
 Copy and paste the following code into your `nextflow.config` file: 
 
@@ -144,22 +196,24 @@ singularity.cacheDir = "$HOME/.singularity/cache"
 params {
 
     bam = [
-        '../../../../sample_data/cwl/2895499223_sorted.bam',
-        '../../../../sample_data/cwl/2895499223_sorted.bai',
+        '../data/2895499223_sorted.bam',
+        '../data/2895499223_sorted.bam.bai',
     ]
 
 }
 ```
-<br>
 
 This tells nextflow how to run, and sets up an input parameter for our indexed bam input.
 
 The `bam` parameter is a list which provides paths to the `.bam` and `.bai` sample data we will use to test the nextflow translation. From here, we can refer to the indexed bam input as `params.bam` in other files.
 
+<br>
+
 >NOTE<br>
->`nextflow.enable.dsl = 2` ensures that we are using the dsl2 nextflow syntax which is the current standard. <br>
->`singularity.enabled = true` tells nextflow to run processes using singularity. Our `samtools_flagstat.nf` has a directive with the form `container "quay.io/biocontainers/samtools:1.11--h6270b1f_0"` provided, so it will use the specified image when running this process. <br>
->`singularity.cacheDir = "$HOME/.singularity/cache"` tells nextflow where singularity images are stored
+>`nextflow.enable.dsl = 2` ensures that we are using the dsl2 nextflow syntax which is the current standard. <br><br>
+>`singularity.enabled = true` tells nextflow to run processes using singularity. Our `samtools_flagstat.nf` has a directive with the form `container "quay.io/biocontainers/samtools:1.11--h6270b1f_0"` provided, so it will use the specified image when running this process. <br> <br>
+>`singularity.cacheDir = "$HOME/.singularity/cache"` tells nextflow where singularity images are stored. <br>
+> Nextflow will handle the singularity image download and stored it in the cache specified above.
 
 <br>
 
@@ -179,8 +233,7 @@ workflow {
 
 The first line creates a nextflow `Channel` for our `bam` input and ensures it is a list. <br>
 The `Channel.toList()` part collects our files into a list, as both the `.bam` and `.bai` files must be passed together. <br>
-The `params.bam` global variable we set up previously is used to supply the 
-paths to our sample data.
+The `params.bam` global variable we set up previously is used to supply the paths to our sample data.
 
 The new `workflow {}` section declares the main workflow entry point. <br>
 When we run this file, nextflow will look for this section and run the workflow contained within. 
@@ -194,7 +247,7 @@ In our case, the workflow only contains a single task, which runs the `SAMTOOLS_
 Ensure you are in the `translated/` working directory, where `nextflow.config` and `samtools_flagstat.nf` reside. 
 
 ```
-cd translated/
+cd translated
 ```
 
 To run the workflow using our sample data, we can now write the following command: 
@@ -204,7 +257,7 @@ nextflow run samtools_flagstat.nf
 
 Nextflow will automatically check if there is a `nextflow.config` file in the working directory, and if so will use that to configure itself. Our inputs are supplied in `nextflow.config` alongside the dsl2 & singularity config, so it should run without issue. 
 
-Once completed, we can check the `./outputs` folder to view our results. 
+Once completed, we can check the `outputs/` folder to view our results. 
 
 If everything went well, there should be a file called `2895499223_sorted.bam.flagstat` with the following contents:
 
@@ -225,14 +278,13 @@ If everything went well, there should be a file called `2895499223_sorted.bam.fl
 
 ```
 
-If needed, you can check the `./final` folder which contains the files we created in this tutorial.  
-
 <br>
 
-### Conclusion
+## Conclusion
 
 In this tutorial we explored how to translate a simple CWL tool to a Nextflow process. 
 
-A tutorial for a more complex CWL tool is available in the `cwl/tools/gatk_haplotype_caller` folder. 
+If you ran into difficulty, you can check the `tutorial1/final/` folder. <br>
+This folder contains the nextflow files we created in this tutorial as a reference. 
 
-A tutorial for a CWL workflow translation to Nextflow is available in the `cwl/workflows/align_sort_markdup` folder. 
+<br>

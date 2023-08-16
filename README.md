@@ -1,15 +1,21 @@
 
-[//]: <> (PREAMBLE)
-
 # Janis Translate Examples
 
-This repository documents examples of using Janis to translate Galaxy &amp; CWL workflows to Nextflow.
+This repository documents examples of using Janis to translate tools and workflows.
 
 This markdown provides a brief [background](#background) to workflow migration, [setup instructions](#setup) for the required software, and [links to the individual tutorials](#tutorials).
 
-[//]: <> (/PREAMBLE)
+<br>
 
-For the Australian BioCommons Janis translate workshop (19th of June 2023) materials, please see [Janis Translate Workshop 19/06/2023](janis_translate.md)
+## Tutorials
+
+**CWL to Nextflow**
+
+- tutorial 1 - tool: samtools flagstat [TODO LINK]
+- tutorial 2 - workflow: align sort markdup [TODO LINK]
+- tutorial 3 - tool: gatk haplotype caller [TODO LINK]
+
+**Galaxy to Nextflow**
 
 <br>
 
@@ -25,14 +31,10 @@ For the Australian BioCommons Janis translate workshop (19th of June 2023) mater
 
 **Software**
 
-[//]: <> (SOFTWARE_INSTALLATION)
-
 Make sure you have the following installed:
 - [Nextflow](https://nf-co.re/usage/installation)
 - [Singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html) or [Docker](https://docs.docker.com/engine/install/)
 - [Janis](https://janis.readthedocs.io/en/latest/index.html)
-
-[//]: <> (/SOFTWARE_INSTALLATION)
 
 <br>
 
@@ -58,37 +60,5 @@ Search for "Nextflow" in the extensions search bar, then click on the "Install" 
 
 ![alt-text](media/nextflow_extension.png)
 
-[//]: <> (REMOTE_SSH_EXTENSION)
-
-[//]: <> (/REMOTE_SSH_EXTENSION)
-
-<br>
-
-**Source files & Sample data**
-
-The source tool / workflow files, as well as sample data can be downlaoded from the following link: [ZENODO LINK].
-
-Once downloaded, uncompress the archive using the following command: 
-```
-tar -xvf janis_translate_examples.tar.gz
-```
-
-Then change directory to the downloaded folder:
-```
-cd janis_translate_examples 
-```
 
 
-<br>
-
-## Tutorials
-
-**CWL to Nextflow**
-- [Samtools Flagstat Tool](tutorials/cwl/tools/samtools_flagstat/tutorial.md)
-- [GATK HaplotypeCaller Tool](tutorials/cwl/tools/gatk_haplotype_caller/tutorial.md)
-- [Align Sort Markdup Workflow](tutorials/cwl/workflows/align_sort_markdup/tutorial.md)
-
-**Galaxy to Nextflow**
-- [Samtools Flagstat Tool](tutorials/galaxy/tools/samtools_flagstat/tutorial.md)
-- [Limma Voom Tool](tutorials/galaxy/tools/limma_voom/tutorial.md)
-- [RNA-Seq reads to counts workflow](tutorials/galaxy/workflows/rnaseq_reads_to_counts/tutorial.md)
