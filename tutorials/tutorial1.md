@@ -83,7 +83,7 @@ tutorial1
     └── samtools_flagstat.cwl
 ``` 
 
-We will translate the `source/samtools_flagstat.cwl` tool into nextflow using janis, then will test out our translation using the files inside the indexed bam file in the `data/` folder. 
+We will translate the `source/samtools_flagstat.cwl` tool into nextflow using janis, then will test out our translation using the indexed bam file in the `data/` folder. 
 
 
 <br>
