@@ -408,25 +408,25 @@ From: `quay.io/biocontainers/coreutils:8.31--h14c3975_0` <br>
 > <details>
 >     <summary>Show Changes (hisat2.nf)</summary>
 >
->        process HISAT2 {
->    
->            container "quay.io/grace_hall1/hisat2:2.2.1"            <-
->            publishDir "${params.outdir}/hisat2"
->
->            ...
->        }
+>     process HISAT2 {
+>        
+>         container "quay.io/grace_hall1/hisat2:2.2.1"            <-
+>         publishDir "${params.outdir}/hisat2"
+>            
+>         ...
+>     }
 >
 > </details>
 > <details>
 >     <summary>Show Changes (featurecounts.nf)</summary>
 >
->        process FEATURECOUNTS {
->    
->            container "quay.io/grace_hall1/featurecounts:2.0.1"     <-
->            publishDir "${params.outdir}/hisat2"
->
->            ...
->        }
+>     process FEATURECOUNTS {
+>        
+>         container "quay.io/grace_hall1/featurecounts:2.0.1"     <-
+>         publishDir "${params.outdir}/hisat2"
+>        
+>         ...
+>     }
 >
 > </details>
 
@@ -450,28 +450,29 @@ Once we have removed the collection join, we will need to pass all results produ
 > <details>
 >     <summary>Show Changes (main.nf)</summary>
 >
->       workflow {
->            ...
+>     workflow {
+>          ...
+>             
+>          // Commented out
+>          // COLLECTION_COLUMN_JOIN(                          <-
+>          //     FEATURECOUNTS.out.output_short.toList(),     <- 
+>          //     collection_column_join_script                <- 
+>          // )                                                <-
+>                 
+>          MULTIQC(
+>                 multiqc_config,                                                      
+>                 FASTQC2.out.out_text_file.toList(),                    <-
+>                 CUTADAPT.out.out_report.toList(),                      <-
+>                 RSEQC_INFER_EXPERIMENT.out.outputTextfile.toList(),    <-
+>                 PICARD_MARK_DUPLICATES.out.out_metrics_file.toList(),  <-
+>                 SAMTOOLS_IDXSTATS.out.outputTabular.toList(),          <-
+>                 RSEQC_GENE_BODY_COVERAGE.out.outputtxt.toList(),       <-
+>                 RSEQC_READ_DISTRIBUTION.out.outputTextfile.toList(),   <-
+>                 FEATURECOUNTS.out.output_summary.toList(),             <-
+>                 HISAT2.out.out_summary_file.toList()                   <-
+>          )
+>     }
 >
->            // Commented out
->            // COLLECTION_COLUMN_JOIN(                          <-
->            //     FEATURECOUNTS.out.output_short.toList(),     <- 
->            //     collection_column_join_script                <- 
->            // )                                                <-
->
->            MULTIQC(
->                   multiqc_config,                                                      
->                   FASTQC2.out.out_text_file.toList(),                    <-
->                   CUTADAPT.out.out_report.toList(),                      <-
->                   RSEQC_INFER_EXPERIMENT.out.outputTextfile.toList(),    <-
->                   PICARD_MARK_DUPLICATES.out.out_metrics_file.toList(),  <-
->                   SAMTOOLS_IDXSTATS.out.outputTabular.toList(),          <-
->                   RSEQC_GENE_BODY_COVERAGE.out.outputtxt.toList(),       <-
->                   RSEQC_READ_DISTRIBUTION.out.outputTextfile.toList(),   <-
->                   FEATURECOUNTS.out.output_summary.toList(),             <-
->                   HISAT2.out.out_summary_file.toList()                   <-
->            )
->        }
 > </details>
 
 <br>
@@ -682,10 +683,8 @@ Let's fix up the `safename_bam` process input in RSEQC_GENE_BODY_COVERAGE, and u
 > - Modify the output collection patterns, which are now dynamic based on the value for `batch_mode_input`.
 >
 > <details>
->     <summary>Show Changes</summary>
+>     <summary>Show Changes (rseqc_gene_body_coverage.nf)</summary>
 >     
->     modules/rseqc_gene_body_coverage.nf:
->     ```
 >     process RSEQC_GENE_BODY_COVERAGE {
 >         
 >         container "quay.io/biocontainers/rseqc:2.6.4--py27hf8a1672_2"
@@ -708,7 +707,7 @@ Let's fix up the `safename_bam` process input in RSEQC_GENE_BODY_COVERAGE, and u
 >         """
 >     
 >     }
->     ```
+>
 > </details>
 <br>
 
@@ -724,29 +723,31 @@ Now that we have fixed the process, let's remove the param in `nextflow.config` 
 > <details>
 >     <summary>Show Changes (nextflow.config)</summary>
 >
->        params {
->            ...
+>     params {
+>         ...
+>            
+>         hisat2_index_path                      = "../data/hisat2_index/*.ht2"       
+>         // rseqc_gene_body_coverage_safename_bam  = NULL_VALUE                  <- removed or commented
+>         samtools_idxstats_addthreads           = "2"       
+>        
+>         ...
+>     }
 >
->            hisat2_index_path                      = "../data/hisat2_index/*.ht2"       
->            // rseqc_gene_body_coverage_safename_bam  = NULL_VALUE                  <- removed or commented
->            samtools_idxstats_addthreads           = "2"       
->            ...
->        }
 > </details>
 > <details>
 >     <summary>Show Changes (main.nf)</summary>
 >
->        workflow {
->            ...
->
->            RSEQC_GENE_BODY_COVERAGE(
->                HISAT2.out.output_alignments,             // batch_mode_input
->                in_input_reference_gene_bed,              // refgene
->                // params.rseqc_gene_body_coverage_safename  // safename        <- removed or commented
->            )
->
->            ...
->        }
+>     workflow {
+>         ...
+>            
+>         RSEQC_GENE_BODY_COVERAGE(
+>             HISAT2.out.output_alignments,             // batch_mode_input
+>             in_input_reference_gene_bed,              // refgene
+>             // params.rseqc_gene_body_coverage_safename  // safename        <- removed or commented
+>         )
+>        
+>         ...
+>     }
 >
 > </details>
 
@@ -870,27 +871,28 @@ Let's update the FASTQC process definition in `modules/fastqc.nf` so this direct
 > <details>
 >     <summary>Show Changes (fastqc.nf)</summary>
 >        
->        process FASTQC {
->            ...
+>     process FASTQC {
+>         ...
+>            
+>         script:
+>         def contaminants = contaminants.simpleName != params.NULL_VALUE ? "--contaminants ${contaminants}" : ""
+>         def limits = limits.simpleName != params.NULL_VALUE ? "--limits ${limits}" : ""
+>         def extract = extract ? "--extract" : ""
+>         def quiet = quiet ? "--quiet" : ""
+>         """
+>         mkdir ${outdir}         <-
+>         fastqc \
+>         ${contaminants} \
+>         ${limits} \
+>         --outdir ${outdir} \
+>         -f ${format_string} \
+>         ${extract} \
+>         ${quiet} \
+>         ${input_file}
+>         """
+>            
+>     }
 >
->            script:
->            def contaminants = contaminants.simpleName != params.NULL_VALUE ? "--contaminants ${contaminants}" : ""
->            def limits = limits.simpleName != params.NULL_VALUE ? "--limits ${limits}" : ""
->            def extract = extract ? "--extract" : ""
->            def quiet = quiet ? "--quiet" : ""
->            """
->            mkdir ${outdir}         <-
->            fastqc \
->            ${contaminants} \
->            ${limits} \
->            --outdir ${outdir} \
->            -f ${format_string} \
->            ${extract} \
->            ${quiet} \
->            ${input_file}
->            """
->
->        }
 > </details>
 <br>
 
@@ -908,15 +910,16 @@ Fastqc also adds `_fastqc.ext` to each output file, where `ext` is the file exte
 > <details>
 >     <summary>Show Changes (fastqc.nf)</summary>
 >
->        process FASTQC {
->            ...
+>     process FASTQC {
+>         ...
+>                  
+>         output:
+>         path "${outdir}/*_fastqc.html", emit: out_html_file     <-
+>         path "${outdir}/*_fastqc.zip", emit: out_text_file      <-
+>            
+>         ...
+>     }
 >
->            output:
->            path "${outdir}/*_fastqc.html", emit: out_html_file     <-
->            path "${outdir}/*_fastqc.zip", emit: out_text_file      <-
->
->            ...
->        }
 > </details>
 
 <br>
@@ -1010,41 +1013,44 @@ To begin, we will address supplying an adapter sequence to the CUTADAPT process.
 > <details>
 >     <summary>Show Changes (cutadapt.nf)</summary>
 >
->         CUTADAPT {
->             ...
-> 
->             input:
->             path library_input_1
->             val adapter                     <-
-> 
->             ...
->         }
+>     CUTADAPT {
+>         ...
+>           
+>         input:
+>         path library_input_1
+>         val adapter                     <-
+>           
+>         ...
+>     }
+>
 > </details>
 > <details>
 >     <summary>Show Changes (nextflow.config)</summary>
 >
->        params {
->            ...
+>     params {
+>         ...
+>            
+>         samtools_idxstats_addthreads       = "2"   
+>         cutadapt_adapter                   = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"     <-
+>            
+>         ...
+>     }
 >
->            samtools_idxstats_addthreads       = "2"   
->            cutadapt_adapter                   = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"     <-
->
->            ...
->        }
 > </details>
 > <details>
 >     <summary>Show Changes (main.nf)</summary>
+>           
+>     workflow {
+>         ...
+>            
+>         CUTADAPT(
+>             ch_in_input_fastqs_collection.flatten(),  // library_input_1    <-
+>             params.cutadapt_adapter                                         <-
+>         )
+>            
+>         ...
+>     }
 >
->        workflow {
->            ...
->
->            CUTADAPT(
->                ch_in_input_fastqs_collection.flatten(),  // library_input_1    <-
->                params.cutadapt_adapter                                         <-
->            )
->
->            ...
->        }
 > </details>
 
 
@@ -1071,19 +1077,20 @@ When used in this manner, the output fastq is sent to `-o`, and the summary repo
 > <details>
 >     <summary>Show Changes (cutadapt.nf)</summary>
 >
->        process CUTADAPT {
->            ...
+>     process CUTADAPT {
+>         ...
+>            
+>         script:
+>         """
+>         cutadapt \
+>         -a ${adapter} \                                             <-
+>         -o ${library_input_1.simpleName}.cutadapt.fastq.gz \        <-
+>         ${library_input_1} \    
+>         > ${library_input_1.simpleName}.cutadapt.txt                <-
+>         """
+>        
+>     }
 >
->            script:
->            """
->            cutadapt \
->            -a ${adapter} \                                             <-
->            -o ${library_input_1.simpleName}.cutadapt.fastq.gz \        <-
->            ${library_input_1} \    
->            > ${library_input_1.simpleName}.cutadapt.txt                <-
->            """
->
->        }
 > </details>
 
 <br>
@@ -1098,17 +1105,18 @@ Now that we have fixed the script section of CUTADAPT, we will change the collec
 > - For the `out_report` output, collect the same filename you supplied in the script section as stdout redirect. 
 >
 > <details>
->     <summary>Show Changes (main.nf)</summary>
+>     <summary>Show Changes (cutadapt.nf)</summary>
 >
->        process CUTADAPT {
->            ...
+>     process CUTADAPT {
+>         ...
+>        
+>         output:
+>         path "${library_input_1.simpleName}.cutadapt.fastq.gz", emit: out12     <-
+>         path "${library_input_1.simpleName}.cutadapt.txt", emit: out_report     <-
+>            
+>         ...
+>     }
 >
->            output:
->            path "${library_input_1.simpleName}.cutadapt.fastq.gz", emit: out12     <-
->            path "${library_input_1.simpleName}.cutadapt.txt", emit: out_report     <-
->
->            ...
->        }
 > </details>
 
 <br>
@@ -1279,6 +1287,7 @@ Now that we have created a channel for the hisat2 index, we will need to replace
 >         
 >         ...
 >     }
+>
 > </details>
 
 <br>
@@ -1319,6 +1328,7 @@ Next, update the `index_path` input of HISAT2 to a `path` type, and update the `
 >         """
 >     
 >     }
+>
 > </details>
 <br>
 
@@ -1367,6 +1377,7 @@ Finally, let's add some extra arguments to the script section, and add samtools 
 >         """
 >     
 >     }
+>
 > </details>
 
 <br>
@@ -1486,6 +1497,7 @@ Now that the script has the correct structure, let's modify the output collectio
 >     
 >         ...
 >     }
+>
 > </details>
 
 <br>
@@ -1573,6 +1585,7 @@ First, we will add these extra arguments to the PICARD_MARK_DUPLICATES script se
 >         """
 >     
 >     }
+>
 > </details>
 
 <br>
@@ -1599,6 +1612,7 @@ Now that we have added the required arguments, let's modify the output collectio
 >         ...
 >     
 >     }
+>
 > </details>
 
 <br>
@@ -1705,6 +1719,7 @@ For each of the processes in your list, we will modify the script section and ou
 >         """
 >     
 >     }
+>
 > </details>
 > <details>
 >     <summary>Show Changes (rseqc_read_distribution.nf)</summary>
@@ -1730,6 +1745,7 @@ For each of the processes in your list, we will modify the script section and ou
 >         """
 >     
 >     }
+>
 > </details>
 > <details>
 >     <summary>Show Changes (samtools_idxstats.nf)</summary>
@@ -1755,6 +1771,7 @@ For each of the processes in your list, we will modify the script section and ou
 >         """
 >     
 >     }
+>
 > </details>
 
 <br>
@@ -1836,6 +1853,7 @@ To fix this issue, we will modify the script section of MULTIQC.
 >         """
 >     
 >     }
+>
 > </details>
 
 <br>
@@ -1862,6 +1880,7 @@ We will also update the output collection patterns to be multiqc defaults.
 >     
 >         ...
 >     }
+>
 > </details>
 
 <br>
