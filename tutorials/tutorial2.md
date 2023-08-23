@@ -153,7 +153,7 @@ To translate our cwl tool, run the following command:
 singularity exec ~/janis.sif janis translate --from cwl --to nextflow source/align_sort_markdup.cwl
 ```
 
-You will see a folder called `translated/` appear, and a nextflow process called `align_sort_markdup.nf` will be present inside. 
+You will see a folder called `translated/` appear, with various nextflow files and directories inside.  
 
 <br>
 

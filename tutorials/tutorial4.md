@@ -94,7 +94,7 @@ janis translate --from <src> --to <dest> <filepath>
 
 The `--from` argument specifies the workflow language of the source file(s), and `--to` specifies the destination we want to translate to. 
 
-In our case, this will be `--from cwl --to nextflow`.
+In our case, this will be `--from galaxy --to nextflow`.
 
 The `<filepath>` argument is the source file we will translate. 
 
@@ -128,7 +128,7 @@ For your own reference / interest, the actual Galaxy Tool Wrapper files will be 
 
 ## Manual Adjustments
 
-The `samtools_flagstat/samtools_flagstat.nf` file should be similar to the following: 
+The `translated/samtools_flagstat.nf` file should be similar to the following: 
 
 ```
 nextflow.enable.dsl=2
@@ -177,7 +177,7 @@ By matching up the process `inputs:` section and the `script:` section, we can s
 
 We can also see that a container image is available for this tool. 
 
-This translation is correct for the `samtools_flagstat.cwl` file and needs no adjusting. 
+This translation is correct for the `samtools flagstat` Galaxy tool wrapper and needs no adjusting. 
 
 <br>
 
@@ -190,7 +190,7 @@ This translation is correct for the `samtools_flagstat.cwl` file and needs no ad
 
 <br>
 
-### Running Samtools Flagstat as a Workflow
+## Running Samtools Flagstat as a Workflow
 
 **Setting up nextflow.config**
 
@@ -308,7 +308,7 @@ If everything went well, you should see a single file called `output1.txt` with 
 
 <br>
 
-### Conclusion
+## Conclusion
 
 In this tutorial we explored how to translate a simple Galaxy Tool to a Nextflow process. 
 
