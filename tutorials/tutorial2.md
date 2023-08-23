@@ -1,5 +1,23 @@
 # Tutorial 2: CWL Workflow -> Nextflow
 
+<br>
+
+## Sections
+
+- [Introduction](#introduction)
+- [Running Janis Translate](#running-janis-translate)
+- [Translation Output](#translation-output)
+- [Running the Translated Workflow](#running-the-translated-workflow)
+- [Manual Adjustments](#manual-adjustments)
+- [Errors](#error-1-process-order)
+    - [Error 1: Process order](#error-1-process-order)
+    - [Error 2: Unquoted strings](#error-2-unquoted-strings)
+    - [Error 3: Filename clashes](#error-3-filename-clashes)
+- [Completed Workflow](#completed-workflow)
+- [Conclusion](#conclusion)
+
+<br>
+
 ## Introduction
 
 This section demonstrates translation of a CWL Workflow to Nextflow using `janis translate`. 
@@ -46,8 +64,6 @@ Any IDE or a CLI text editor (VIM, nano) are sufficient for this material.
 We recommend Visual Studio Code (VS Code) as it is lightweight and has rich support for extensions to add functionality. 
 
 <br>
-
-## Janis Translate
 
 **Obtaining Janis**
 

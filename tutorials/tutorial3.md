@@ -1,5 +1,17 @@
 # Tutorial 3: CWL Tool -> Nextflow
 
+<br>
+
+## Sections
+
+- [Introduction](#introduction)
+- [Running Janis Translate](#running-janis-translate)
+- [Manual Adjustments to Translated Tool](#manual-adjustments-to-translated-tool)
+- [Running Translated Tool as a Workflow](#running-translated-tool-as-a-workflow)
+- [Conclusion](#conclusion)
+
+<br>
+
 ## Introduction
 
 This tutorial demonstrates translation of a `gatk HaplotypeCaller` tool from CWL to Nextflow using `janis translate`. <br>
@@ -29,8 +41,6 @@ Any IDE or a CLI text editor (VIM, nano) are sufficient for this material.
 We recommend Visual Studio Code (VS Code) as it is lightweight and has rich support for extensions to add functionality. 
 
 <br>
-
-## Janis Translate
 
 **Obtaining Janis**
 

@@ -11,11 +11,13 @@ This markdown provides a brief [background](#background) to workflow migration, 
 
 **CWL to Nextflow**
 
-- tutorial 1 - tool: samtools flagstat [TODO LINK]
-- tutorial 2 - workflow: align sort markdup [TODO LINK]
-- tutorial 3 - tool: gatk haplotype caller [TODO LINK]
+- tutorial 1 - [samtools flagstat](tutorials/tutorial1.md) (tool)
+- tutorial 2 - [align sort markdup](tutorials/tutorial2.md) (workflow)
+- tutorial 3 - [gatk haplotype caller](tutorials/tutorial3.md) (tool)
 
 **Galaxy to Nextflow**
+- tutorial 4 - [samtools flagstat](tutorials/tutorial4.md) (tool)
+- tutorial 5 - [RNAseq reads to counts](tutorials/tutorial5.md) (workflow)
 
 <br>
 
@@ -59,6 +61,4 @@ Click on the extensions button (four blocks) on the left side bar.<br>
 Search for "Nextflow" in the extensions search bar, then click on the "Install" next to the Nextflow extension.
 
 ![alt-text](media/nextflow_extension.png)
-
-
 

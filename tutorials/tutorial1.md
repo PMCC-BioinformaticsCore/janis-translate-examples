@@ -1,5 +1,17 @@
 # Tutorial 1: Simple CWL Tool -> Nextflow
 
+<br>
+
+## Sections
+
+- [Introduction](#introduction)
+- [Running Janis Translate](#running-janis-translate)
+- [Manual Adjustments](#manual-adjustments-to-translated-tool)
+- [Running Translated Tool](#running-translated-tool-as-a-workflow)
+- [Conclusion](#conclusion)
+
+<br>
+
 ## Introduction
 
 This section demonstrates translation of a basic `samtools flagstat` tool from CWL to Nextflow using `janis translate`. 
@@ -29,8 +41,6 @@ Any IDE or a CLI text editor (VIM, nano) are sufficient for this material.
 We recommend Visual Studio Code (VS Code) as it is lightweight and has rich support for extensions to add functionality. 
 
 <br>
-
-## Janis Translate
 
 **Obtaining Janis**
 
@@ -84,7 +94,6 @@ tutorial1
 ``` 
 
 We will translate the `source/samtools_flagstat.cwl` tool into nextflow using janis, then will test out our translation using the indexed bam file in the `data/` folder. 
-
 
 <br>
 

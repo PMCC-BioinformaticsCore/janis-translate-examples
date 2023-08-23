@@ -1,5 +1,26 @@
 # Tutorial 5: Galaxy Workflow -> Nextflow
 
+<br>
+
+## Sections
+
+- [Introduction](#introduction)
+- [Running Janis Translate](#running-janis-translate)
+- [Task 1: Swapping Containers](#task-1-swapping-containers)
+- [Task 2: Removing COLLECTION_COLUMN_JOIN process](#task-2-removing-collection_column_join-process)
+- [Task 3: Setting up Inputs](#task-3-setting-up-inputs)
+- [Task 4: Fixing RSEQC Input](#task-4-fixing-rseqc-input)
+- [Task 5: FASTQC outdir](#task-5-fastqc-outdir)
+- [Task 6: CUTADAPT output collection](#task-6-cutadapt-output-collection)
+- [Task 7: HISAT2 index ](#task-7-hisat2-index)
+- [Task 8: FEATURECOUNTS command](#task-8-featurecounts-command)
+- [Task 9: PICARD_MARK_DUPLICATES command](#task-9-picard_mark_duplicates-command)
+- [Task 10: MULTIQC input filename collision](#task-10-multiqc-input-filename-collision)
+- [Task 11: MULTIQC script](#task-11-multiqc-script-final-task)
+- [Conclusion](#conclusion)
+
+<br>
+
 ## Introduction
 
 This tutorial demonstrates translation of a challenging Galaxy workflow to Nextflow using `janis translate`. 
@@ -40,8 +61,6 @@ Any IDE or a CLI text editor (VIM, nano) are sufficient for this material.
 We recommend Visual Studio Code (VS Code) as it is lightweight and has rich support for extensions to add functionality. 
 
 <br>
-
-## Janis Translate
 
 **Obtaining Janis**
 

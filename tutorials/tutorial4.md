@@ -1,6 +1,18 @@
 
 # Tutorial 4: Simple Galaxy Tool -> Nextflow
 
+<br>
+
+## Sections
+
+- [Introduction](#introduction)
+- [Running Janis Translate](#running-janis-translate)
+- [Manual Adjustments](#manual-adjustments)
+- [Running Samtools Flagstat as a Workflow](#running-samtools-flagstat-as-a-workflow)
+- [Conclusion](#conclusion)
+
+<br>
+
 ## Introduction
 
 This section demonstrates translation of a basic `samtools flagstat` Galaxy Tool Wrapper to Nextflow using `janis translate`. <br>
@@ -27,8 +39,6 @@ Any IDE or a CLI text editor (VIM, nano) are sufficient for this material.
 We recommend Visual Studio Code (VS Code) as it is lightweight and has rich support for extensions to add functionality. 
 
 <br>
-
-## Janis Translate
 
 **Obtaining Janis**
 
@@ -80,7 +90,6 @@ tutorial4
 ``` 
 
 We will translate the Galaxy "samtools flagstat" Tool Wrapper into nextflow using janis, then will test out our translation using the bam file in the `data/` folder. 
-
 
 <br>
 
