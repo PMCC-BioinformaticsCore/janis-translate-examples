@@ -556,50 +556,58 @@ workflow {
 
 We will need to rearrange the process calls in `main.nf` so they mirror the order seen in the source CWL. 
 
-!!! question "Rerranging process calls"
-    Cut-and-paste the process calls to be in the correct order in the main workflow.
+> <span style="color:orange;">TASK ⚡</span><br>
+>
+> Rerranging process calls
+>
+> - Cut-and-paste the process calls to be in the correct order in the main workflow.
+>
+> <details>
+>     <summary>Show Correct Order</summary>
+>
+>     1. ALIGN
+>     2. MERGE
+>     3. NAME_SORT
+>     4. MARK_DUPLICATES_AND_SORT
+>     5. INDEX_BAM
+>
+> </details>
+> <details>
+>     <summary>Show Changes (main.nf)</summary>
+>
+>     workflow {
+>     
+>         ALIGN(
+>             ch_bams.flatten(),       // ch_bam
+>             reference,               // ch_reference
+>             ch_readgroups.flatten()  // ch_readgroup
+>         )
+>     
+>         MERGE(
+>             ALIGN.out.tagged_bam.toList(),  // bams
+>             params.final_name               // name
+>         )
+>         
+>         NAME_SORT(
+>             MERGE.out.merged_bam  // bam
+>         )
+>     
+>         MARK_DUPLICATES_AND_SORT(
+>             params.mark_duplicates_and_sort.script,  // script
+>             NAME_SORT.out.name_sorted_bam,           // bam
+>             params.NULL_VALUE,                       // input_sort_order
+>             params.final_name                        // output_name
+>         )
+>     
+>         INDEX_BAM(
+>             MARK_DUPLICATES_AND_SORT.out.sorted_bam.map{ tuple -> tuple[0] }  // bam
+>         )
+>     
+>     }
+>
+> </details>
 
-    ??? hint "Correct Order"
-
-        1. ALIGN
-        2. MERGE
-        3. NAME_SORT
-        4. MARK_DUPLICATES_AND_SORT
-        5. INDEX_BAM
-
-    ??? hint "Show Workflow"
-
-        ```
-        workflow {
-
-            ALIGN(
-                ch_bams.flatten(),       // ch_bam
-                reference,               // ch_reference
-                ch_readgroups.flatten()  // ch_readgroup
-            )
-
-            MERGE(
-                ALIGN.out.tagged_bam.toList(),  // bams
-                params.final_name               // name
-            )
-            
-            NAME_SORT(
-                MERGE.out.merged_bam  // bam
-            )
-
-            MARK_DUPLICATES_AND_SORT(
-                params.mark_duplicates_and_sort.script,  // script
-                NAME_SORT.out.name_sorted_bam,           // bam
-                params.NULL_VALUE,                       // input_sort_order
-                params.final_name                        // output_name
-            )
-
-            INDEX_BAM(
-                MARK_DUPLICATES_AND_SORT.out.sorted_bam.map{ tuple -> tuple[0] }  // bam
-            )
-
-        }
-        ```
+<br>
 
 After you are done, rerun the workflow by using the same command as before.
 
@@ -707,22 +715,35 @@ When used in a nextflow process, string arugments should be enclosed  using `""`
 
 Back in the `modules/align_and_tag.nf` file, let's properly enclose the `readgroup` input in quotes. 
 
-!!! question "align_and_tag.nf"
-    In the `ALIGN_AND_TAG` process script enclose the `${readgroup}` reference in quotes.
+> <span style="color:orange;">TASK ⚡</span><br>
+>
+> Enclosing `readgroup` in quotes
+>
+> - In the `ALIGN_AND_TAG` process script enclose the `${readgroup}` reference in quotes.
+>
+> <details>
+>     <summary>Show Changes (align_and_tag.nf)</summary>
+>       
+>     process ALIGN_AND_TAG {
+>           ...
+>             
+>           script:
+>           def reference = reference[0]
+>           """
+>           /bin/bash /usr/bin/alignment_helper.sh \
+>           ${bam} \
+>           "${readgroup}" \                            <- quotes added
+>           ${reference} \
+>           8 \
+>           > refAlign.bam 
+>           """
+>
+>     }
+>     ...
+>
+> </details>
 
-    ??? hint "Show Change"
-        ```
-        script:
-        def reference = reference[0]
-        """
-        /bin/bash /usr/bin/alignment_helper.sh \
-        ${bam} \
-        "${readgroup}" \              <- quotes added
-        ${reference} \
-        8 \
-        > refAlign.bam 
-        """
-        ```
+<br>
 
 After you are have made the change, re-run the workflow by using the same command as before:
 
@@ -820,44 +841,45 @@ Calling `${reads.simpleName}` in the process script would yield `"SRR1234"`.
 
 Note that directory path and the extension have been trimmed out!
 
-!!! question "align_and_tag.nf"
-    Script section:<br>
-    Use `.simpleName` to generate an output filename based on the `path bam` process input.<br> 
-    Add `_refAlign.bam` onto the end of this filename for clarity.
-
-    Output section:<br>
-    Alter the collection expression for the `aligned_bam` output to collect this file.
-
-    ??? hint "Show Change"
-        ```
-        process ALIGN_AND_TAG {
-            
-            container "mgibio/alignment_helper-cwl:1.0.0"
-            publishDir "${params.outdir}/align_and_tag"
-            cpus "${params.align_and_tag.cpus}"
-            memory "${params.align_and_tag.memory}"
-
-            input:
-            path reference
-            path bam
-            val readgroup
-
-            output:
-            path "${bam.simpleName}_refAlign.bam", emit: aligned_bam    <-
-
-            script:
-            def reference = reference[0]
-            """
-            /bin/bash /usr/bin/alignment_helper.sh \
-            ${bam} \
-            "${readgroup}" \
-            ${reference} \
-            8 \
-            > ${bam.simpleName}_refAlign.bam                            <-
-            """
-
-        }
-        ```
+> <span style="color:orange;">TASK ⚡</span><br>
+>
+> Unique output names for the `ALIGN_AND_TAG` process
+>
+> - In the script section, use `.simpleName` to generate an output filename based on the `path bam` process input. <br>
+>   Add "_refAlign.bam" onto the end of this filename for clarity.
+> - Alter the output collection expression for the `aligned_bam` output to collect this file.
+> <details>
+>     <summary>Show Changes (align_and_tag.nf)</summary>
+>
+>     process ALIGN_AND_TAG {
+>                 
+>         container "mgibio/alignment_helper-cwl:1.0.0"
+>         publishDir "${params.outdir}/align_and_tag"
+>         cpus "${params.align_and_tag.cpus}"
+>         memory "${params.align_and_tag.memory}"
+>     
+>         input:
+>         path reference
+>         path bam
+>         val readgroup
+>     
+>         output:
+>         path "${bam.simpleName}_refAlign.bam", emit: aligned_bam    <-
+>     
+>         script:
+>         def reference = reference[0]
+>         """
+>         /bin/bash /usr/bin/alignment_helper.sh \
+>         ${bam} \
+>         "${readgroup}" \
+>         ${reference} \
+>         8 \
+>         > ${bam.simpleName}_refAlign.bam                            <-
+>         """
+>     
+>     }
+>
+> </details>
 
 <br>
 
