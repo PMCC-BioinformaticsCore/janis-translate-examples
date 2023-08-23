@@ -14,6 +14,7 @@
 <br>
 
 ## Introduction
+[Back to top](#sections)
 
 This section demonstrates translation of a basic `samtools flagstat` Galaxy Tool Wrapper to Nextflow using `janis translate`. <br>
 
@@ -94,6 +95,7 @@ We will translate the Galaxy "samtools flagstat" Tool Wrapper into nextflow usin
 <br>
 
 ## Running Janis Translate
+[Back to top](#sections)
 
 To translate a tool / workflow,  we use `janis translate`.
 
@@ -136,6 +138,7 @@ For your own reference / interest, the actual Galaxy Tool Wrapper files will be 
 <br>
 
 ## Manual Adjustments
+[Back to top](#sections)
 
 The `translated/samtools_flagstat.nf` file should be similar to the following: 
 
@@ -200,6 +203,7 @@ This translation is correct for the `samtools flagstat` Galaxy tool wrapper and 
 <br>
 
 ## Running Samtools Flagstat as a Workflow
+[Back to top](#sections)
 
 **Setting up nextflow.config**
 
@@ -318,6 +322,7 @@ If everything went well, you should see a single file called `output1.txt` with 
 <br>
 
 ## Conclusion
+[Back to top](#sections)
 
 In this tutorial we explored how to translate a simple Galaxy Tool to a Nextflow process. 
 

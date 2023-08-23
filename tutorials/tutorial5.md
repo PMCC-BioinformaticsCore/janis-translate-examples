@@ -22,6 +22,7 @@
 <br>
 
 ## Introduction
+[Back to top](#sections)
 
 This tutorial demonstrates translation of a challenging Galaxy workflow to Nextflow using `janis translate`. 
 
@@ -148,6 +149,7 @@ tutorial5
 
 
 ## Running Janis Translate
+[Back to top](#sections)
 
 **CLI syntax**
 
@@ -374,6 +376,7 @@ The tasks to follow in this tutorial will bring our translation to a runnable st
 <br>
 
 ## Task 1: Swapping Containers
+[Back to top](#sections)
 
 The first thing to do is change the container requirement for some tools. 
 
@@ -452,6 +455,7 @@ From: `quay.io/biocontainers/coreutils:8.31--h14c3975_0` <br>
 <br>
 
 ## Task 2: Removing COLLECTION_COLUMN_JOIN process
+[Back to top](#sections)
 
 One of the tasks in this workflow is not needed for our analysis, as relates to the way Galaxy handles collections of files. 
 
@@ -497,6 +501,7 @@ Once we have removed the collection join, we will need to pass all results produ
 <br>
 
 ## Task 3: Setting up Inputs
+[Back to top](#sections)
 
 Now that we have covered `main.nf`, let's set up inputs to run our translated Nextflow workflow.  
 
@@ -629,6 +634,7 @@ As we have removed the `COLLECTION_COLUMN_JOIN_SCRIPT` process, the `collection_
 <br>
 
 ## Task 4: Fixing RSEQC Input
+[Back to top](#sections)
 
 **Diagnosing the issue**
 
@@ -823,6 +829,7 @@ If your error message is different to the one being discussed, do not worry. You
 <br>
 
 ## Task 5: FASTQC outdir
+[Back to top](#sections)
 
 This issue caused by the FASTQC process translation. 
 
@@ -962,6 +969,7 @@ If it doesn't, you may need to change the container directive to the following: 
 <br>
 
 ## Task 6: CUTADAPT output collection
+[Back to top](#sections)
 
 The next error you will experience is due to output collection in the CUTADAPT process. 
 
@@ -1158,6 +1166,7 @@ Nextflow may now hang on the HISAT2 tasks, or may exit with an error message.
 <br>
 
 ## Task 7: HISAT2 index 
+[Back to top](#sections)
 
 The next error is due to the index not being supplied correctly to the HISAT2 process.
 
@@ -1409,6 +1418,7 @@ nextflow run main.nf
 <br>
 
 ## Task 8: FEATURECOUNTS command
+[Back to top](#sections)
 
 The next error is due to incorrect formatting in the FEATURECOUNTS process script. 
 
@@ -1531,6 +1541,7 @@ nextflow run main.nf -resume
 <br>
 
 ## Task 9: PICARD_MARK_DUPLICATES command
+[Back to top](#sections)
 
 This error is due to incorrect formatting in the PICARD_MARK_DUPLICATES process script. 
 
@@ -1643,6 +1654,7 @@ nextflow run main.nf -resume
 <br>
 
 ## Task 10: MULTIQC input filename collision
+[Back to top](#sections)
 
 This error is due to multiple input files possessing the same filename. 
 
@@ -1805,6 +1817,8 @@ nextflow run main.nf
 <br>
 
 ## Task 11: MULTIQC script (final task)
+[Back to top](#sections)
+
 The last error we need to fix is the MULTIQC script. 
 
 **Error message**
@@ -1914,6 +1928,7 @@ Your workflow should now run to completion.
 <br>
 
 ## Completed Workflow
+[Back to top](#sections)
 
 All going well, your workflow should now run to completion. <br>
 
@@ -1938,6 +1953,7 @@ If all went well, you should see a MultiQC report with metrics for each sample w
 
 
 ## Conclusion
+[Back to top](#sections)
 
 Thank you for your time! 
 

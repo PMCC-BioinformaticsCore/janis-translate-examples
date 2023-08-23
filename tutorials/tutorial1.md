@@ -13,6 +13,7 @@
 <br>
 
 ## Introduction
+[Back to top](#sections)
 
 This section demonstrates translation of a basic `samtools flagstat` tool from CWL to Nextflow using `janis translate`. 
 
@@ -98,6 +99,7 @@ We will translate the `source/samtools_flagstat.cwl` tool into nextflow using ja
 <br>
 
 ## Running Janis Translate
+[Back to top](#sections)
 
 To translate a tool / workflow,  we use `janis translate`.
 
@@ -125,6 +127,7 @@ You will see a folder called `translated/` appear, and a nextflow process called
 <br>
 
 ## Manual Adjustments to Translated Tool
+[Back to top](#sections)
 
 The `translated/samtools_flagstat.nf` file should be similar to the following: 
 
@@ -170,6 +173,7 @@ Have a look at the source CWL file to see how they match up.
 <br>
 
 ## Running Translated Tool as a Workflow
+[Back to top](#sections)
 
 **Collecting Process Outputs**
 
@@ -290,6 +294,7 @@ If everything went well, there should be a file called `2895499223_sorted.bam.fl
 <br>
 
 ## Conclusion
+[Back to top](#sections)
 
 In this tutorial we explored how to translate a simple CWL tool to a Nextflow process. 
 

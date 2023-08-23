@@ -19,6 +19,7 @@
 <br>
 
 ## Introduction
+[Back to top](#sections)
 
 This section demonstrates translation of a CWL Workflow to Nextflow using `janis translate`. 
 
@@ -147,6 +148,7 @@ We will translate the `source/align_sort_markdup.cwl` workflow into nextflow usi
 <br>
 
 ## Running Janis Translate
+[Back to top](#sections)
 
 To translate a tool / workflow,  we use `janis translate`.
 
@@ -174,6 +176,7 @@ You will see a folder called `translated/` appear, with various nextflow files a
 <br>
 
 ## Translation Output
+[Back to top](#sections)
 
 The output translation will contain multiple files and directories.<br>
 You will see a folder called `translated/` appear - inside this folder, we should see the following structure:
@@ -201,6 +204,7 @@ From here, we will do a test-run of the workflow using sample data, and make man
 <br>
 
 ## Running the Translated Workflow
+[Back to top](#sections)
 
 **Inspect main.nf**
 
@@ -476,6 +480,7 @@ This is the first of ***3*** errors we will encounter and fix while making this 
 <br>
 
 ## Manual Adjustments
+[Back to top](#sections)
 
 Translations performed by `janis translate` often require manual changes due to the difficulty of translating between languages with non-overlapping feature sets. 
 
@@ -489,6 +494,7 @@ In this section we will fix ***3 errors*** to bring the translation to a finishe
 <br>
 
 ## Error 1: Process Order
+[Back to top](#sections)
 
 **Error message**
 
@@ -634,6 +640,7 @@ nextflow run main.nf
 <br>
 
 ## Error 2: Unquoted Strings
+[Back to top](#sections)
 
 **Error message**
 
@@ -770,6 +777,7 @@ nextflow run main.nf
 <br>
 
 ## Error 3: Filename Clashes
+[Back to top](#sections)
 
 **Error Message**
 
@@ -909,6 +917,7 @@ With any luck, this will fix the remaining issues and the workflow will now run 
 <br>
 
 ## Completed Workflow
+[Back to top](#sections)
 
 Once completed, we can check the `outputs/` folder to view our results. <br>
 If everything went well, the `outputs/` folder should have the following structure:
@@ -933,6 +942,7 @@ outputs
 <br>
 
 ## Conclusion
+[Back to top](#sections)
 
 In this section we explored how to translate the `align_sort_markdup` CWL Workflow to Nextflow using `janis translate`. 
 

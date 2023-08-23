@@ -13,6 +13,7 @@
 <br>
 
 ## Introduction
+[Back to top](#sections)
 
 This tutorial demonstrates translation of a `gatk HaplotypeCaller` tool from CWL to Nextflow using `janis translate`. <br>
 
@@ -104,6 +105,7 @@ We will translate the `source/gatk_haplotype_caller.cwl` tool into nextflow usin
 <br>
 
 ## Running Janis Translate
+[Back to top](#sections)
 
 To translate a tool / workflow,  we use `janis translate`.
 
@@ -131,6 +133,7 @@ You will see a folder called `translated/` appear, and a nextflow process called
 <br>
 
 ## Manual Adjustments to Translated Tool
+[Back to top](#sections)
 
 The `translated/gatk_haplotype_caller.nf` file should be similar to the following: 
 
@@ -223,6 +226,7 @@ Have a look at the source CWL file to see how they match up.
 <br>
 
 ## Running Translated Tool as a Workflow
+[Back to top](#sections)
 
 **Collecting Process Outputs**
 
@@ -363,6 +367,7 @@ If everything went well, the `outputs/` folder should contain 2 files:
 <br>
 
 ## Conclusion
+[Back to top](#sections)
 
 In this section we explored how to translate the `gatk_haplotype_caller` CWL CommandLineTool to a Nextflow process. 
 
