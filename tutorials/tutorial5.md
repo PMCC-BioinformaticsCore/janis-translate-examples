@@ -91,7 +91,7 @@ This archive contains the source galaxy workflow to translate, sample data, and 
 
 Run the following commands to download & decompress the zenodo archive:
 ```
-wget https://zenodo.org/record/8251789/files/tutorial5.tar.gz
+wget https://zenodo.org/record/8275567/files/tutorial5.tar.gz
 tar -xvf tutorial5.tar.gz
 ```
 

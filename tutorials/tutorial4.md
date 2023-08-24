@@ -69,7 +69,7 @@ This archive contains sample data and the finished translations as a reference.
 
 Run the following commands to download & decompress the zenodo archive:
 ```
-wget https://zenodo.org/record/8251789/files/tutorial4.tar.gz
+wget https://zenodo.org/record/8275567/files/tutorial4.tar.gz
 tar -xvf tutorial4.tar.gz
 ```
 

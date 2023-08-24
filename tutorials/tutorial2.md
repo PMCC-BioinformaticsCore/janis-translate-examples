@@ -94,7 +94,7 @@ This archive contains the source CWL file, sample data, and finished translation
 
 Run the following commands to download & decompress the zenodo archive:
 ```
-wget https://zenodo.org/record/8251789/files/tutorial2.tar.gz
+wget https://zenodo.org/record/8275567/files/tutorial2.tar.gz
 tar -xvf tutorial2.tar.gz
 ```
 
